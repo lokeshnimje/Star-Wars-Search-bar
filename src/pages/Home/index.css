@@ -1,10 +1,14 @@
+
 .search-input {
     width: 400px;
+    border: 1px solid white;
     padding: 16px 24px;
     border-radius: 25px;
     border: 0;
     outline: 0;
-
+    text-align: center;
+    position: relative;
+    top: 200px;
     font-size: 16px;
 
     background: #2d2f30;
@@ -13,9 +17,29 @@
 
 .logo {
     text-align: center;
-    margin-bottom: 35px;
+    position: relative;
+    top: 200px
+    /* margin-bottom: 35px; */
 }
 
 .logo img {
     width: 200px;
+  
+}
+.inputicons{
+    position: relative;
+    background-color: #FFEB00;
+    border-radius:50%;
+    padding:5px;
+}
+.suggestion_Div {
+    /* border: 1px solid white; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f2f2f2;
+    margin: 2px 0px;
+}
+.suggestion_Div > div:nth-child(1) >p {
+    margin: 0;
 }
