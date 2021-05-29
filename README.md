@@ -1,6 +1,6 @@
 
 
-# A website to search your favourite Star Wars character.
+# A webApp to search your favourite Star Wars character.
 
 ## Getting started 📚
 . 
@@ -19,7 +19,7 @@ npm install
 npm start
 ```
 
-### Live demo of this project available here https://urban-piper.vercel.app/
+### [Click here to run Live demo](https://urban-piper.vercel.app/)
 
 #### Tech Stack
 - HTML
@@ -33,5 +33,12 @@ npm start
 - Axios
 
 ### Screenshots
+* Landing Page with Search bar
+![Landing Page](https://github.com/lokeshnimje/UrbanPiper_Assignment/blob/master/public/home.png)
+* Live searching in search bar
+![Live searching](https://github.com/lokeshnimje/UrbanPiper_Assignment/blob/master/public/landingPage.png)
+* Character Page
+![Character Page](https://github.com/lokeshnimje/UrbanPiper_Assignment/blob/master/public/CharacterPage.png)
 
-
+### Contributors
+Lokesh Nimje
