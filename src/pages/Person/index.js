@@ -1,14 +1,20 @@
 import React from 'react';
 import './index.css';
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-function Person({person}) {
+function Person({character}) {
   const history = useHistory();
-  const {name ,birth_year, eye_color, skin_color, mass, height} = person
+
+  // destructuring all details of character recieved as props from prev page.
+  const {name ,birth_year, eye_color, skin_color, mass, height} = character
+  
   return (
     <div className="person">
-      <div className="text">
-        <h3>{name}</h3>
+      <div className="card">
+        {/* name of the character */}
+        <h3>{name}</h3>   
+
+        {/* table to show all details of character */}
         <table>
           <tr>
             <td>Birth Year:</td>
@@ -31,6 +37,8 @@ function Person({person}) {
             <td>{height}</td>
           </tr>
         </table>
+
+        {/* button to go back to previous page */}
         <button onClick={()=>history.push("/")}>Go Back</button>
       </div>
     </div>
@@ -38,4 +46,4 @@ function Person({person}) {
 }
 
 export default Person;
-// 
+ 
