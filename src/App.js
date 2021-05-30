@@ -5,6 +5,7 @@ import HomePage from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import axios from "axios";
 import "./App.css";
+import { useHistory } from "react-router-dom";
 
 function App() {
   // Creating and initializing all States for components 
@@ -13,6 +14,8 @@ function App() {
   const [isError, setIsError] = React.useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [character,setCharacter] = useState({})
+
+  const history = useHistory();
 
 // rendering component as per query in search box
   React.useEffect(() => {
@@ -44,6 +47,9 @@ function App() {
         setIsLoading(false);
       });
   };
+  // if(isError){
+  //   history.push("/error")
+  // }
 
   return (
     <div className="app">
@@ -58,6 +64,7 @@ function App() {
               onChange={(val) => setQuery(val)}
               suggestions={suggestions}
               setCharacter={setCharacter}
+              isError={isError}
             />
           </Route>
           <Route path="/person/:id">
@@ -66,7 +73,7 @@ function App() {
              character={character}
             />
           </Route>
-          <Route>
+          <Route path="/error" exact>
             <NotFound />
           </Route>
         </Switch>

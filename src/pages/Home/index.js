@@ -91,7 +91,7 @@ const SuggestionBox = styled.div`
   }
 `;
 
-function HomePage({ loading, setIsLoading, suggestions, onChange,setCharacter }) {
+function HomePage({ loading, isError, setIsLoading, suggestions, onChange,setCharacter }) {
 // Creating and initializing all States for components 
   const history = useHistory();
   const [query, setQuery] = useState("");
@@ -127,8 +127,12 @@ function HomePage({ loading, setIsLoading, suggestions, onChange,setCharacter })
 
   // clicking to character's name from suggestion will take to next page.
   const handleClick = () => {
-    setCharacter(suggestions[active-1])
-    sendData(suggestions[active - 1].name)
+    if(suggestions[0] === undefined){ //if no result found then redirect to error page.
+      history.push("/error")
+    }else {
+      setCharacter(suggestions[active-1])
+      sendData(suggestions[active - 1].name)
+    }
   }
 
 
@@ -160,9 +164,12 @@ function HomePage({ loading, setIsLoading, suggestions, onChange,setCharacter })
         break;
       }
       case 13: {    // handling enter button
-        setCharacter(suggestions[active-1])   // set character to selected name
-        sendData(suggestions[active - 1].name)  // send selected character's name to switch to next page
-        break
+        if(suggestions[0] === undefined){   //if no result found then redirect to error page
+          history.push("/error")
+        }else {
+          setCharacter(suggestions[active-1])       // set character to selected name
+          sendData(suggestions[active - 1].name)       // send selected character's name to switch to next page
+        }
       }
       default: {
         return;
