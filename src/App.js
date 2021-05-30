@@ -63,6 +63,7 @@ function App() {
               value={query}
               onChange={(val) => setQuery(val)}
               suggestions={suggestions}
+              setSuggestions={setSuggestions}
               setCharacter={setCharacter}
               isError={isError}
             />

@@ -32,15 +32,60 @@
     border-radius:50%;
     padding:5px;
     color: #2d2f30;
+    margin: 0 5px;
+    font-size: 20px;
 }
-.suggestion_Div {
-    /* border: 1px solid white; */
+
+.search_Bar_Icons {
+    width: 90px;
+    float: right;
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
-    color: #f2f2f2;
-    margin: 2px 0px;
+    padding-right: 10px;
+    color: grey;
+    cursor: pointer;
 }
-.suggestion_Div > div:nth-child(1) >p {
-    margin: 0;
+/* .break_line {
+    margin: 0 10px;
+    height: 50px;
+    border-left: 2px solid rgb(17, 17, 17);
+} */
+
+.suggested_div{
+    display:flex;
+    justify-content: space-between;    
+    /* width:400px; */
+    padding:0;
+    z-index: 3;
+
+
+}
+.suggested_div div:nth-child(2){
+    text-align: right;
+    /* border:1px solid blue; */
+    width:20%;
+    color:grey;
+    font-size: 14px;
+    padding:0;
+    margin-right: 40px;
+}
+.suggested_div div:nth-child(1){
+    width:60%;
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    padding:0
+}
+.suggested_div div:nth-child(1) span:nth-child(1){
+    font-weight: 600 ;
+    padding:0
+}
+
+.suggested_div div:nth-child(1) span:nth-child(2){
+    font-weight: 400 ;
+    font-size: 12px;
+    color:grey;
+    padding:0
 }

@@ -5,14 +5,15 @@ import styled from "styled-components";
 import { useThrottle } from "use-throttle";
 import { useHistory } from "react-router-dom";
 import {FaSearch} from "react-icons/fa";
-
+import {MdClear} from "react-icons/md"
+import LoadingIndicator from "../../Components/LoadingIndicator"
 //created styled component to provide styles to page.
 
 // style for search bar wrapper which include input field along with icons.
 const SearchbarWrapper = styled.div`
   border: 1px solid black;
   border-radius: 25px;
-  padding: 16px 15px;
+  padding: 10px 0px 10px 15px;
   display: flex;
   height: 25px;
   width: 480px;
@@ -26,42 +27,12 @@ const SearchbarWrapper = styled.div`
 // style for input field
 const Input = styled.input`
   width: 400px;
-  padding: 16px 24px;
   border-radius: 25px;
   border: 0;
   outline: 0;
   font-size: 16px;
   background: #2d2f30;
   color: #f2f2f2;
-`;
-
-// style for search bar icons provided in right corner of search bar.
-const searchBarIcons = styled.div`
-  display: flex;
-  flex: 0 0 auto;
-  padding-right: 10px;
-  color: grey;
-  cursor: pointer;
-`;
-
-// style for spinner for loading.
-const Spinner = styled.div`
-  border: 3px solid yellow;
-  border-top: 3px solid #2D2F30; /* Blue */
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 2s linear infinite;
-  margin-left: 10px;
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 `;
 
 // style for suggestion box provided below search bar.
@@ -85,13 +56,10 @@ const SuggestionBox = styled.div`
     padding: 5px;
     text-align: left;
   }
-  & :nth-child(${({ active }) => active}) {
-    background: grey;
-    color: white;
-  }
+ 
 `;
 
-function HomePage({ loading, isError, setIsLoading, suggestions, onChange,setCharacter }) {
+function HomePage({ isLoading, setIsLoading,value, onChange,suggestions,setSuggestions ,setCharacter}) {
 // Creating and initializing all States for components 
   const history = useHistory();
   const [query, setQuery] = useState("");
@@ -118,6 +86,8 @@ function HomePage({ loading, isError, setIsLoading, suggestions, onChange,setCha
     setQuery("");
     onChange("");
     setIsLoading(false);
+    setCharacter({})
+    setSuggestions([])
   };
 
   // push to the next page with character's name added in url.
@@ -130,8 +100,8 @@ function HomePage({ loading, isError, setIsLoading, suggestions, onChange,setCha
     if(suggestions[0] === undefined){ //if no result found then redirect to error page.
       history.push("/error")
     }else {
-      setCharacter(suggestions[active-1])
-      sendData(suggestions[active - 1].name)
+      setCharacter(suggestions[active])
+      sendData(suggestions[active].name)
     }
   }
 
@@ -167,8 +137,8 @@ function HomePage({ loading, isError, setIsLoading, suggestions, onChange,setCha
         if(suggestions[0] === undefined){   //if no result found then redirect to error page
           history.push("/error")
         }else {
-          setCharacter(suggestions[active-1])       // set character to selected name
-          sendData(suggestions[active - 1].name)       // send selected character's name to switch to next page
+          setCharacter(suggestions[active])       // set character to selected name
+          sendData(suggestions[active].name)       // send selected character's name to switch to next page
         }
       }
       default: {
@@ -184,24 +154,41 @@ function HomePage({ loading, isError, setIsLoading, suggestions, onChange,setCha
       <div className="logo">
         <img src={logo} alt="Star Wars Logo" />
       </div>
-
       {/* search bar with input field and all icons  */}
       <SearchbarWrapper query={query} onKeyUp={handleChangeActiveSuggestion}>
-        <Input value={query} onChange={handleInputChange} />
-        <searchBarIcons>
-          { <span >{!query ?<FaSearch  className="inputicons"/>:
-           <span onClick={(e)=>handleClear(e)}>X</span>}</span>}
+        <Input value={query} placeholder="Search name here" onChange={handleInputChange} />
+  
            {/* if Loading is true then spin */}
-          {loading && <Spinner />}  
-        </searchBarIcons>
+           <div className="search_Bar_Icons">
+              {isLoading ? <LoadingIndicator /> : <FaSearch  className="inputicons"/>}  
+              {query && <span ><MdClear style={{fontSize:"22px"}} onClick={(e)=>handleClear(e)}/></span> }
+           </div>
       </SearchbarWrapper>
 
       {/* if loading is over then show suggestion box */}
-      {!loading && (
+      {!isLoading && (
         <SuggestionBox ref={scrollRef} limit={5}  len={suggestions.length} active={active}>
-          {suggestions.map((item, index) => (
-            <div onClick={handleClick} style={{fontSize:"20px"}} key={item.name} onMouseOver={() => setActive(index + 1)}>
-               {item.name}
+          {suggestions.map((item, i) => (
+            <div onClick={handleClick} key={item.name} className="suggested_div" style = {active === i? {backgroundColor:"#FFEB00", color:"#110B0B"}: null} onMouseOver={() => setActive(i)}>
+               <div>
+                  <span>
+                    {item.name}
+                  </span>
+                  <span>
+                    {item.birth_year}
+                  </span>
+                </div>
+                <div>
+                  {item.gender}
+                </div>
+               {/* {item.name} */}
+                {/* <div className="suggestion_Div">
+                  <div>
+                    <h3>{item.name}</h3>
+                    <p>{item.birth_year}</p>
+                  </div>
+                  <div>{item.gender}</div>
+                </div> */}
             </div>
           ))}
         </SuggestionBox>
