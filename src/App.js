@@ -5,7 +5,8 @@ import HomePage from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import axios from "axios";
 import "./App.css";
-import { useHistory } from "react-router-dom";
+import useDebouncer from "./Components/Hooks/useDebounce";
+
 
 function App() {
   // Creating and initializing all States for components 
@@ -15,22 +16,24 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [character,setCharacter] = useState({})
 
-  const history = useHistory();
+  const debouncerValue = useDebouncer(query) 
+
 
 // rendering component as per query in search box
   React.useEffect(() => {
-    if (query == "") {      // if the query in the search bar is empty then no suggestion is shown.
+    if (debouncerValue == "") {      // if the query in the search bar is empty then no suggestion is shown.
       setSuggestions([]);
+      setIsLoading(false)
     } else {
-      getData(query);     // if the query is present then fetch data as per given query.
+      getData(debouncerValue);     // if the query is present then fetch data as per given query.
       let searchResult = suggestions
         .filter((item) =>
-          item.name.toLowerCase().indexOf(query) !== 0 ? true : false
+          item.name.toLowerCase().indexOf(debouncerValue) !== 0 ? true : false
         )
         .map((item) => item.name);
       setSuggestions(searchResult);
     }
-  }, [query]);      // Query as dependency
+  }, [debouncerValue]);      // debouncer value as dependency
 
    // fetching data from API as the input given from the search bar.
   const getData = (query) => {   
@@ -38,6 +41,7 @@ function App() {
     axios
       .get(`https://swapi.dev/api/people/?search=${query}`)
       .then((res) => {
+        console.log(res)
         setSuggestions(res.data.results);    
       })
       .catch((err) => {
@@ -47,9 +51,6 @@ function App() {
         setIsLoading(false);
       });
   };
-  // if(isError){
-  //   history.push("/error")
-  // }
 
   return (
     <div className="app">
@@ -59,9 +60,9 @@ function App() {
           {/* Homepage as default page */}
             <HomePage
               isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              value={query}
-              onChange={(val) => setQuery(val)}
+              setIsLoading={(value)=>setIsLoading(value)}
+              query={query}
+              setQuery={(value) => setQuery(value)}
               suggestions={suggestions}
               setSuggestions={setSuggestions}
               setCharacter={setCharacter}

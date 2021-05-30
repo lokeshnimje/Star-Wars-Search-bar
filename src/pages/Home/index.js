@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import logo from "./star-wars-logo.png";
 import "./index.css";
 import styled from "styled-components";
-import { useThrottle } from "use-throttle";
 import { useHistory } from "react-router-dom";
 import {FaSearch} from "react-icons/fa";
 import {MdClear} from "react-icons/md"
-import LoadingIndicator from "../../Components/LoadingIndicator"
+import LoadingIndicator from "../../Components/LoadingIndicator/LoadingIndicator"
 //created styled component to provide styles to page.
 
 // style for search bar wrapper which include input field along with icons.
@@ -59,32 +58,16 @@ const SuggestionBox = styled.div`
  
 `;
 
-function HomePage({ isLoading, setIsLoading,value, onChange,suggestions,setSuggestions ,setCharacter}) {
+function HomePage({ isLoading, setIsLoading,query,setQuery,suggestions,setSuggestions ,setCharacter}) {
 // Creating and initializing all States for components 
   const history = useHistory();
-  const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const scrollRef = useRef();
-  const ThrottleText = useThrottle(query, 1000);
 
-  // re-render component as per throttle
-  useEffect(() => {
-    onChange(ThrottleText);
-  }, [ThrottleText, onChange]);
-
-  // handle input given in search bar.
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
-    setIsLoading(true);
-    setTimeout(() => {    // loading indicator shown for 1 second.
-      setIsLoading(false);
-    }, 1000);
-  };
 
   // clear the search bar when clicking on clear icon.
   const handleClear = () => {
     setQuery("");
-    onChange("");
     setIsLoading(false);
     setCharacter({})
     setSuggestions([])
@@ -156,7 +139,7 @@ function HomePage({ isLoading, setIsLoading,value, onChange,suggestions,setSugge
       </div>
       {/* search bar with input field and all icons  */}
       <SearchbarWrapper query={query} onKeyUp={handleChangeActiveSuggestion}>
-        <Input value={query} placeholder="Search name here" onChange={handleInputChange} />
+        <Input placeholder="Search name here" onChange={(e) => setIsLoading(true)} onKeyUp={(e) => setQuery(e.target.value)}/>
   
            {/* if Loading is true then spin */}
            <div className="search_Bar_Icons">
