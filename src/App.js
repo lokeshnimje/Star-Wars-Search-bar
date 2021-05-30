@@ -7,64 +7,65 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-  const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(false);
+  // Creating and initializing all States for components 
+  const [query, setQuery] = useState("");     
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = React.useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [person,setPerson] = useState({})
+  const [character,setCharacter] = useState({})
 
+// rendering component as per query in search box
   React.useEffect(() => {
-    if (query == "") {
+    if (query == "") {      // if the query in the search bar is empty then no suggestion is shown.
       setSuggestions([]);
     } else {
-      getData(query);
-      let out = suggestions
+      getData(query);     // if the query is present then fetch data as per given query.
+      let searchResult = suggestions
         .filter((item) =>
           item.name.toLowerCase().indexOf(query) !== 0 ? true : false
         )
         .map((item) => item.name);
-      setSuggestions(out);
-      // console.log(out);
+      setSuggestions(searchResult);
     }
-  }, [query]);
+  }, [query]);      // Query as dependency
 
-  const getData = (val) => {
-    setLoading(true);
+   // fetching data from API as the input given from the search bar.
+  const getData = (query) => {   
+    setIsLoading(true);
     axios
-      .get(`https://swapi.dev/api/people/?search=${val}`)
+      .get(`https://swapi.dev/api/people/?search=${query}`)
       .then((res) => {
-        setSuggestions(res.data.results);
-        console.log(res.data.results)
+        setSuggestions(res.data.results);    
       })
       .catch((err) => {
         setIsError(true);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
   return (
     <div className="app">
-      <Router>
+      <Router>    
         <Switch>
-          <Route path="/" exact>
+          <Route path="/" exact>    
+          {/* Homepage as default page */}
             <HomePage
-              loading={loading}
-              setLoading={setLoading}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
               value={query}
               onChange={(val) => setQuery(val)}
               suggestions={suggestions}
-              setPerson={setPerson}
+              setCharacter={setCharacter}
             />
           </Route>
-
           <Route path="/person/:id">
+            {/* Route to Person page whit character's detail as props */}
             <Person 
-             person={person}
+             character={character}
             />
           </Route>
-
           <Route>
             <NotFound />
           </Route>
