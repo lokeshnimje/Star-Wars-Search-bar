@@ -160,7 +160,7 @@ function HomePage({ isLoading, setIsLoading,value, onChange,suggestions,setSugge
   
            {/* if Loading is true then spin */}
            <div className="search_Bar_Icons">
-              {isLoading ? <LoadingIndicator /> : <FaSearch  className="inputicons"/>}  
+              {isLoading ? <LoadingIndicator /> : <FaSearch  onClick={handleClick} className="inputicons"/>}  
               {query && <span ><MdClear style={{fontSize:"22px"}} onClick={(e)=>handleClear(e)}/></span> }
            </div>
       </SearchbarWrapper>
@@ -181,14 +181,6 @@ function HomePage({ isLoading, setIsLoading,value, onChange,suggestions,setSugge
                 <div>
                   {item.gender}
                 </div>
-               {/* {item.name} */}
-                {/* <div className="suggestion_Div">
-                  <div>
-                    <h3>{item.name}</h3>
-                    <p>{item.birth_year}</p>
-                  </div>
-                  <div>{item.gender}</div>
-                </div> */}
             </div>
           ))}
         </SuggestionBox>
